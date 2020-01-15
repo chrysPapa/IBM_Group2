@@ -73,3 +73,27 @@ html, body {
     border-radius: 3px;
     border-top:3px solid #82CAFA;
 }
+
+#sidebarButton{
+    padding: 2px;
+}
+
+#sidebar {
+    display: flex;
+  height: 100%; /* 100% Full-height */
+  width: auto; /* 0 width - change this with JavaScript */
+  max-width: 20%;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0; 
+  right: 0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding: 2px; /* Place content 60px from the top */
+  transition: 0.5s ease-out; /* 0.5 second transition effect to slide in the sidenav */
+    color: #000;
+    border-right: 2px solid rgba(0, 0, 0, 0.2);
+    background-color: red;
+    
+    overflow: hidden;
+    white-space: nowrap;
+}

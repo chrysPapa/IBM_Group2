@@ -193,3 +193,10 @@ function optionButtonInactive(button) {
     .children()
     .addClass("fa-plus");
 }
+
+//SIDEBAR
+$('#sidebar #sidebarButton').click(toggleSidebar);
+
+function toggleSidebar(){
+  $('#sidebar #sidebarContent').toggle(500);
+};
