@@ -49,7 +49,15 @@ $(document).ready(function () {
   });
 
   $("div").on("click", ".queryResultTitle", function () {
-    $(this).closest("div").find(".Text").toggle(500);
+    $(this).closest("div").find(".Text").toggle(400);
+    if ($(this).children().hasClass("fa-angle-right")) {
+      $(this).children().removeClass("fa-angle-right");
+      $(this).children().addClass("fa-angle-down");
+    }
+    else {
+      $(this).children().removeClass("fa-angle-down");
+      $(this).children().addClass("fa-angle-right");
+    }
   });
 
   function updateOptionList() {
@@ -83,25 +91,35 @@ $(document).ready(function () {
         })
         .then(function (jsonData) {
           var txt = "";
+          txt +="<h4>Titles</h4>";
           for (var count = 0; count < jsonData.length; ++count) {
             if (
               !jsonData[count].text.includes("Price: $") &&
-              !jsonData[count].text.includes("CES Registration")
+              !jsonData[count].text.includes("CES Registration") && 
+              !jsonData[count].text.includes("arrow-black")
             ) {
               txt += '<div class=\"p-3">';
               txt +=
-                '<h4 class=\"queryResultTitle\">' + jsonData[count].extracted_metadata.title + "</h4>";
+
+                '<h5 class=\"queryResultTitle\"><i class=\"fas fa-angle-right mr-2\"></i>' + jsonData[count].extracted_metadata.title + "</h5>";
               var textBodyFull = removeTextEnding(jsonData[count].text);
               var textBodyWithDate = removeLocation(textBodyFull);
               txt += '<div class=\"Text p-3\">'
+              txt += "<h6>Description</h6>";
               txt += "<p>" + removeDateTime(textBodyWithDate);
               +"</p>";
+              txt += "<h6>Location</h6>";
               txt += "<p>" + getLocation(textBodyFull) + "</p>";
+              txt += "<h6>Date/Time</h6>";
               txt += "<p>" + getDateTime(textBodyWithDate) + "</p>";
+              var button
               txt += "</div></div>";
             }
           }
           $("#queryResultsContainer").html(txt);
+          $(".Text").each(function () {
+            $(this).hide();
+          })
           showList();
           optionList = [];
           updateOptionList();
@@ -159,8 +177,8 @@ $(document).ready(function () {
   }
 
   function getLocation(text) {
-    text.replace("LOCATION", "Location");
-    return text.slice(text.search("LOCATION"), text.length);
+    text = text.slice(text.search("LOCATION"), text.search("INCLUDED"));
+    return text.replace("LOCATION", "");
   }
 
   function getDateTime(text) {
