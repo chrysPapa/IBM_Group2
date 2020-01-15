@@ -98,13 +98,22 @@ html, body {
 
 #sidebar h2{
     white-space: nowrap;
+    font-size: 16px;
+    margin: auto;
+    float: right;
+    display: flex
+}
+
+#sidebar #sidebarButton{
+    text-decoration: none;
 }
 
 #sidebar #sidebarContent{
     display: none;
     border-left: 1px solid #007bff;
     padding: 2px;
-    max-width: 400px;
+    max-width: 250px;
+    width: 250px;
 }
 
 @media (max-width: 576px) { 
@@ -130,4 +139,8 @@ html, body {
     padding: 5px 10px;
     width: auto;
     display : inline-flex;
+}
+
+#searchHistory{
+    margin-top: 20px;
 }

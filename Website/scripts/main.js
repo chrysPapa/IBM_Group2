@@ -82,7 +82,7 @@ $(document).ready(function () {
     if (!queryShowing) {
 
       //add to search history
-      addToHistory(optionList, searchHistory);
+      if (optionList.length >0) {addToHistory(optionList, searchHistory);}
 
       var url =
         "https://ibm-project-group2-20200110154159265.eu-gb.mybluemix.net/query?queryData=";
