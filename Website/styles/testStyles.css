@@ -76,24 +76,58 @@ html, body {
 
 #sidebarButton{
     padding: 2px;
+    border-left: 1px solid #007bff;
 }
 
 #sidebar {
-    display: flex;
-  height: 100%; /* 100% Full-height */
-  width: auto; /* 0 width - change this with JavaScript */
-  max-width: 20%;
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Stay on top */
-  top: 0; 
-  right: 0;
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding: 2px; /* Place content 60px from the top */
-  transition: 0.5s ease-out; /* 0.5 second transition effect to slide in the sidenav */
+    display: inline-flex;
+    height: 100%;
+    width: auto;
+    position: fixed; 
+    z-index: 1; 
+    top: 0; 
+    right: 0;
+    overflow-x: hidden;
+    
+    transition: 0.5s ease-out;
     color: #000;
-    border-right: 2px solid rgba(0, 0, 0, 0.2);
-    background-color: red;
+    background-color: white;
     
     overflow: hidden;
+}
+
+#sidebar h2{
     white-space: nowrap;
+}
+
+#sidebar #sidebarContent{
+    display: none;
+    border-left: 1px solid #007bff;
+    padding: 2px;
+    max-width: 400px;
+}
+
+@media (max-width: 576px) { 
+    #sidebarContent{
+        width: 100%;
+    }
+ }
+
+.historyEntry{
+    border: width border-style color;
+    background-color: #82CAFA;
+    border-radius: 5px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    padding: 5px;
+    width: 100%;
+    margin: 3px;
+}
+
+#sidebar #sidebarContent #searchHistory .optionListItem{
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px 10px;
+    width: auto;
+    display : inline-flex;
 }

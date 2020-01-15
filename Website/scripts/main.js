@@ -1,4 +1,8 @@
+var sidebarOpen = false; //initate sidebar state
 $(document).ready(function () {
+
+  var searchHistory = [];
+
   var optionList = [
     "Aritificial Intelligence",
     "Machine Learning",
@@ -68,6 +72,10 @@ $(document).ready(function () {
 
   $("#searchQueryBtn").click(function () {
     if (!queryShowing) {
+
+      //add to search history
+      addToHistory(optionList, searchHistory);
+
       var url =
         "https://ibm-project-group2-20200110154159265.eu-gb.mybluemix.net/query?queryData=";
       var flag = false;
@@ -199,4 +207,45 @@ $('#sidebar #sidebarButton').click(toggleSidebar);
 
 function toggleSidebar(){
   $('#sidebar #sidebarContent').toggle(500);
+  if (sidebarOpen){
+    $('#sidebar #sidebarButton').removeClass('fa-angle-double-right').addClass('fa-angle-double-left');
+  }else{
+    $('#sidebar #sidebarButton').removeClass('fa-angle-double-left').addClass('fa-angle-double-right');
+  }
+  sidebarOpen = !sidebarOpen;
 };
+
+function addToHistory(tags, searchHistory){
+  console.log(searchHistory);
+  searchHistory.push(new searchQuery(tags));
+
+  refreshHistory(searchHistory);
+
+  
+}
+
+function refreshHistory(searchHistory){
+  let output = "";
+
+  searchHistory.forEach((entry) => {
+    let tEntry = "<div class=\"historyEntry\">";
+    entry.getTags().forEach((tag) => {
+      tEntry += "<div class=\"optionListItem bg-primary text-light\">" + tag + "</div>" 
+    })
+
+    output += tEntry + "</div>";
+  }, this);
+
+  $('#searchHistory').html(output);
+  
+}
+
+class searchQuery{
+    constructor(tags){
+        this.tags = tags;
+    }
+
+    getTags(){
+        return this.tags;
+    }
+}
