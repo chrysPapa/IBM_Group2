@@ -1,0 +1,75 @@
+html, body {
+    width:100%;
+}
+#option-container {
+    width:95%;
+    margin: 0 auto;
+}
+#option-container > div {
+    margin: 0 auto;
+    padding:20px;
+}
+#customQueryBtn {
+    float:right;
+}
+.optionButton {
+    border:none;
+    outline:none;
+    padding:5px;
+    margin:10px;
+    font-size:1.25em;
+}
+.optionButton > i {
+    padding-right:5px;
+}
+.optionButton:focus {
+    outline:none;
+}
+.optionButtonActive {
+    border-bottom:3px solid #00a8ff;
+}
+.optionButtonInactive {
+    border-bottom:3px solid transparent;
+}
+.optionButtonInactive:hover {
+    border-bottom:3px solid #00a8ff;
+    opacity:75%;
+}
+
+#queryOptionList > div {
+    display : inline-block;
+    padding:5px 10px;
+    border-radius:5px;
+    margin: 0px 5px 5px 5px;
+}
+
+#rcorners {
+  border-radius: 15px 50px 30px;
+  background: #82CAFA;
+  padding: 20px; 
+  width: 1000px;
+  height: 150px;  
+}
+
+#rcornersT {
+  border-radius: 15px 50px 30px 5px;
+  background: #82CAFA;
+  padding: 10px; 
+  width: 10px;
+  height: 10px;  
+}
+
+.queryResultTitle{
+    cursor:pointer;
+
+}
+
+.Text{
+    border-radius: 5px;
+    background: #82CAFA;
+}
+
+.queryResultTitle{
+    border-radius: 3px;
+    border-top:3px solid #82CAFA;
+}
