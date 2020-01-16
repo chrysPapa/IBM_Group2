@@ -139,12 +139,15 @@ $(document).ready(function() {
         } else url = url + "&queryData=" + optionList[i];
       }
       url+= "&colid=61bba916-01d3-497b-8ea2-0ac54d0fe7c2";
+      waitingStatus(true);
+
 
       fetch(url)
         .then(function(response) {
           return response.json();
         })
         .then(function(jsonData) {
+          waitingStatus(false);
           var txt = "";
           txt += "<h4>Titles</h4>";
           loopLength = 10;
@@ -203,6 +206,7 @@ $(document).ready(function() {
       hideList();
       optionList = [];
       updateOptionList();
+      $("html")[0].scrollIntoView();
       }
   });
 
@@ -306,6 +310,18 @@ function optionButtonInactive(button) {
   button.addClass("optionButtonInactive");
   button.children().removeClass("fa-check");
   button.children().addClass("fa-plus");
+}
+
+function waitingStatus(status){
+
+  if (status){
+    $('#searchQueryBtn').removeClass('btn-success').addClass('btn-secondary')
+    $('#searchQueryBtn').find('i').removeClass('fa-search').addClass('fa-hourglass-half')
+  }
+  else{
+    $('#searchQueryBtn').find('i').addClass('fa-search').removeClass('fa-hourglass-half')
+    $('#searchQueryBtn').addClass('btn-success').removeClass('btn-secondary')
+  }
 }
 
 //SIDEBAR

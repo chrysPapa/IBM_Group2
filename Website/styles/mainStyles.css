@@ -45,6 +45,7 @@ html, body {
 
 #queryOptionList {
     margin: 0px auto;
+    min-height: 80px;
 }
 
 #optionListContainer{
