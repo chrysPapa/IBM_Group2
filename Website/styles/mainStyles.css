@@ -47,6 +47,10 @@ html, body {
     margin: 0px auto;
 }
 
+#optionListContainer{
+    position: sticky;
+}
+
 #rcorners {
   border-radius: 15px 50px 30px;
   background: #82CAFA;

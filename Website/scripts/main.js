@@ -110,13 +110,13 @@ $(document).ready(function() {
     $("#queryOptionList").html(returnString);
   }
 
-  $("#clearQueryBtn").click(() => {
+  $("#clearQueryBtn").click((e) => {
     optionList = [];
     updateOptionList();
     resetOptionButtons();
   })
 
-  $("#searchQueryBtn").click(function () {
+  $("#searchQueryBtn").click(function (e) {
 
       if (!queryShowing && optionList.length > 0) {
         addToHistory(optionList, searchHistory);
@@ -195,7 +195,7 @@ $(document).ready(function() {
       hideList();
       optionList = [];
       updateOptionList();
-    } 
+      }
   });
 
   function showList() {
