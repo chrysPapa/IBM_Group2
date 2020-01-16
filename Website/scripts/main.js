@@ -52,6 +52,17 @@ $(document).ready(function() {
     updateOptionList();
   });
 
+  $('#customQuerySearch').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+          if ($("#customQuerySearch").val().length > 0) {
+            optionList.push($("#customQuerySearch").val());
+            $("#customQuerySearch").val("");
+            updateOptionList();
+          };
+        }
+    });
+
   $("div").on("click", ".queryResultTitle", function() {
     let text = $(this)
       .closest("div")
@@ -98,6 +109,12 @@ $(document).ready(function() {
     } else returnString += '<p class="text-secondary">Start adding queries by clicking above..</p>';
     $("#queryOptionList").html(returnString);
   }
+
+  $("#clearQueryBtn").click(() => {
+    optionList = [];
+    updateOptionList();
+    resetOptionButtons();
+  })
 
   $("#searchQueryBtn").click(function () {
 
@@ -190,7 +207,7 @@ $(document).ready(function() {
   function hideList() {
     queryShowing = false;
     $("#option-container").slideDown();
-    $("#searchQueryBtn").html('<i class="fas fa-search mr-2"></i>Search Query');
+    $("#searchQueryBtn").html('<i class="fas fa-search mr-2"></i>Search');
   }
 
   $(document).on("click", ".optionListRemoveIcon", function() {
@@ -264,6 +281,7 @@ $(document).ready(function() {
     })
     hideList();
     updateOptionList();
+    toggleSidebar();
   })
 });
 
