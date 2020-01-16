@@ -43,6 +43,11 @@ html, body {
     margin: 0px 5px 5px 5px;
 }
 
+#queryOptionList {
+    width: 85%;
+    margin: 0px auto;
+}
+
 #rcorners {
   border-radius: 15px 50px 30px;
   background: #82CAFA;

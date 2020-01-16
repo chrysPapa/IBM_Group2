@@ -1,6 +1,7 @@
 var sidebarOpen = false; //initiate sidebar state
 $(document).ready(function () {
   var searchHistory = [];
+  var queryShowing = false;
 
   var optionList = [
     "Aritificial Intelligence",
@@ -88,7 +89,9 @@ $(document).ready(function () {
   
 
   $("#searchQueryBtn").click(function () {
-      if (optionList.length > 0) {addToHistory(optionList, searchHistory);
+
+      if (!queryShowing && optionList.length > 0) {
+        addToHistory(optionList, searchHistory);
 
       var url =
         "https://ibm-project-group2-20200110154159265.eu-gb.mybluemix.net/query?queryData=";
@@ -150,7 +153,6 @@ $(document).ready(function () {
             $(this).hide();
           })
           showList();
-          optionList = [];
           updateOptionList();
           resetOptionButtons();
         });
@@ -217,12 +219,17 @@ $(document).ready(function () {
     }
   });
 
-  $('searchHistory').on("click", ".historyEntry", (e) => {
+  $('#searchHistory').on("click", ".historyEntry", (e) => {
+    console.log("test");
     optionList = [];
     let entry = $(e.target);
-    entry.children().array.forEach(function(element) {
-      console.log("test");
-    }, this);
+    console.log(entry.children(".optionListItem"));
+    children = entry.children(".optionListItem").each((index, object) => {
+      optionList.push(object.innerHTML);
+      console.log(object.innerHTML);
+    })
+    hideList();
+    updateOptionList();
   })
 });
 
