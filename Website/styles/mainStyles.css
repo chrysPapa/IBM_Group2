@@ -78,6 +78,7 @@ html, body {
     border-bottom-right-radius: 5px;
     background: #82CAFA;
     padding: 16px;
+    overflow: auto;
 }
 
 .queryResultTitle{
