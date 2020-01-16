@@ -174,7 +174,11 @@ $(document).ready(function() {
           updateOptionList();
           resetOptionButtons();
         });
-    } else hideList();
+    } else{
+      hideList();
+      optionList = [];
+      updateOptionList();
+    } 
   });
 
   function showList() {
