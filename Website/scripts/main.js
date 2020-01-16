@@ -1,8 +1,4 @@
-var sidebarOpen = false; //initate sidebar state
 $(document).ready(function () {
-
-  var searchHistory = [];
-
   var optionList = [
     "Aritificial Intelligence",
     "Machine Learning",
@@ -70,6 +66,7 @@ $(document).ready(function () {
       returnString += '<p class="text-secondary">Current queries..</p>';
       for (var i = 0; i < optionList.length; ++i) {
         returnString += '<div class="optionListItem bg-primary text-light">';
+        returnString += '<i class=\"fas fa-times optionListRemoveIcon mr-1\"></i>';
         returnString += optionList[i];
         returnString += "</div>";
       }
@@ -80,10 +77,6 @@ $(document).ready(function () {
 
   $("#searchQueryBtn").click(function () {
     if (!queryShowing) {
-
-      //add to search history
-      if (optionList.length >0) {addToHistory(optionList, searchHistory);}
-
       var url =
         "https://ibm-project-group2-20200110154159265.eu-gb.mybluemix.net/query?queryData=";
       var flag = false;
@@ -93,37 +86,47 @@ $(document).ready(function () {
           flag = true;
         } else url = url + "&choice=" + optionList[i];
       }
+
       fetch(url)
-        .then(function (response) {
+        .then(function(response) {
           return response.json();
         })
-        .then(function (jsonData) {
+        .then(function(jsonData) {
           var txt = "";
-          txt +="<h4>Titles</h4>";
-          for (var count = 0; count < jsonData.length; ++count) {
-            if (
-              !jsonData[count].text.includes("Price: $") &&
-              !jsonData[count].text.includes("CES Registration") && 
-              !jsonData[count].text.includes("arrow-black")
-            ) {
-              txt += '<div class=\"p-3">';
-              txt +=
+          txt += "<h4>Titles</h4>";
+          loopLength = 10;
+          for (var count = 0; count < loopLength; ++count) {
+            if (jsonData.length > 0) {
+              if (
+                !jsonData[count].text.includes("Price: $") &&
+                !jsonData[count].text.includes("CES Registration") &&
+                !jsonData[count].text.includes("arrow-black")
+              ) {
+                txt += '<div class="p-3">';
+                txt +=
+                  '<h5 class="queryResultTitle"><i class="fas fa-angle-right mr-2"></i>' +
+                  jsonData[count].extracted_metadata.title +
+                  "</h5>";
+                var textBodyFull = removeTextEnding(jsonData[count].text);
+                var textBodyWithDate = removeLocation(textBodyFull);
+                txt += '<div class="Text p-3">';
+                txt += "<h6>Description</h6>";
+                txt += "<p>" + removeDateTime(textBodyWithDate);
+                +"</p>";
+                txt += "<h6>Location</h6>";
+                txt += "<p>" + getLocation(textBodyFull) + "</p>";
+                txt += "<h6>Date/Time</h6>";
+                txt += "<p>" + getDateTime(textBodyWithDate) + '<button style="float:right" value="Submit" class="saveButton btn btn-dark">Save</button></p>';
 
-                '<h5 class=\"queryResultTitle\"><i class=\"fas fa-angle-right mr-2\"></i>' + jsonData[count].extracted_metadata.title + "</h5>";
-              var textBodyFull = removeTextEnding(jsonData[count].text);
-              var textBodyWithDate = removeLocation(textBodyFull);
-              txt += '<div class=\"Text p-3\">'
-              txt += "<h6>Description</h6>";
-              txt += "<p>" + removeDateTime(textBodyWithDate);
-              +"</p>";
-              txt += "<h6>Location</h6>";
-              txt += "<p>" + getLocation(textBodyFull) + "</p>";
-              txt += "<h6>Date/Time</h6>";
-              txt += "<p>" + getDateTime(textBodyWithDate) + "</p>";
-              var button
-              txt += "</div></div>";
+                txt += "</div></div>";
+              } else if (jsonData.length > loopLength) {
+                loopLength++;
+              } else {
+                loopLength = count;
+              }
             }
           }
+
           $("#queryResultsContainer").html(txt);
           $(".Text").each(function () {
             $(this).hide();
@@ -137,25 +140,6 @@ $(document).ready(function () {
   });
 
 
-  var test = 0;
-
-  $(document).ready(function () {
-    $("").click(function () {
-      console.log("test");
-      $("p").toggle(600);
-      if (test == 0) {
-        $(this).removeClass("fa-angle-right");
-        $(this).addClass("fa-angle-down");
-        test = test + 1;
-      } else if (test == 1) {
-        $(this).removeClass("fa-angle-down");
-        $(this).addClass("fa-angle-right");
-        test = 0;
-      }
-
-    });
-  });
-
   function showList() {
     queryShowing = true;
     $("#option-container").slideUp();
@@ -167,6 +151,12 @@ $(document).ready(function () {
     $("#option-container").slideDown();
     $("#searchQueryBtn").html('<i class="fas fa-search mr-2"></i>Search Query');
   }
+
+  $(document).on("click", ".optionListRemoveIcon", function() {
+    optionButtonInactive($(".optionButton:contains(" + $(this).parent().text() + ")"));
+    optionList.splice(optionList.indexOf($(this).parent().text()), 1);
+    updateOptionList();
+  });
 
   function resetOptionButtons() {
     $(".optionButton").each(function () {
@@ -218,52 +208,4 @@ function optionButtonInactive(button) {
   button
     .children()
     .addClass("fa-plus");
-}
-
-//SIDEBAR
-$('#sidebar #sidebarButton').click(toggleSidebar);
-
-function toggleSidebar(){
-  $('#sidebar #sidebarContent').toggle(500);
-  if (sidebarOpen){
-    $('#sidebar #sidebarButton').removeClass('fa-angle-double-right').addClass('fa-angle-double-left');
-  }else{
-    $('#sidebar #sidebarButton').removeClass('fa-angle-double-left').addClass('fa-angle-double-right');
-  }
-  sidebarOpen = !sidebarOpen;
-};
-
-function addToHistory(tags, searchHistory){
-  console.log(searchHistory);
-  searchHistory.push(new searchQuery(tags));
-
-  refreshHistory(searchHistory);
-
-  
-}
-
-function refreshHistory(searchHistory){
-  let output = "";
-
-  searchHistory.forEach((entry) => {
-    let tEntry = "<div class=\"historyEntry\">";
-    entry.getTags().forEach((tag) => {
-      tEntry += "<div class=\"optionListItem bg-primary text-light\">" + tag + "</div>" 
-    })
-
-    output += tEntry + "</div>";
-  }, this);
-
-  $('#searchHistory').html(output);
-  
-}
-
-class searchQuery{
-    constructor(tags){
-        this.tags = tags;
-    }
-
-    getTags(){
-        return this.tags;
-    }
 }

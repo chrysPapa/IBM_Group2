@@ -74,73 +74,10 @@ html, body {
     border-top:3px solid #82CAFA;
 }
 
-#sidebarButton{
-    padding: 2px;
-    border-left: 1px solid #007bff;
+.optionListRemoveIcon{
+    cursor: pointer;
 }
 
-#sidebar {
-    display: inline-flex;
-    height: 100%;
-    width: auto;
-    position: fixed; 
-    z-index: 1; 
-    top: 0; 
-    right: 0;
-    overflow-x: hidden;
-    
-    transition: 0.5s ease-out;
-    color: #000;
-    background-color: white;
-    
-    overflow: hidden;
-}
-
-#sidebar h2{
-    white-space: nowrap;
-    font-size: 16px;
-    margin: auto;
-    float: right;
-    display: flex
-}
-
-#sidebar #sidebarButton{
-    text-decoration: none;
-}
-
-#sidebar #sidebarContent{
-    display: none;
-    border-left: 1px solid #007bff;
-    padding: 2px;
-    max-width: 250px;
-    width: 250px;
-}
-
-@media (max-width: 576px) { 
-    #sidebarContent{
-        width: 100%;
-    }
- }
-
-.historyEntry{
-    border: width border-style color;
-    background-color: #82CAFA;
-    border-radius: 5px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    padding: 5px;
-    width: 100%;
-    margin: 3px;
-}
-
-#sidebar #sidebarContent #searchHistory .optionListItem{
-    border-radius: 5px;
-    margin: 5px;
-    padding: 5px 10px;
-    width: auto;
-    display : inline-flex;
-}
-
-#searchHistory{
-    margin-top: 20px;
+.saveButton{
+    color: #82CAFA;
 }
