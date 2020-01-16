@@ -1,5 +1,5 @@
 var sidebarOpen = false; //initiate sidebar state
-$(document).ready(function () {
+$(document).ready(function() {
   var searchHistory = [];
 
   var optionList = [
@@ -32,7 +32,7 @@ $(document).ready(function () {
   }
   var optionList = [];
 
-  $("#customQueryBtn").click(function () {
+  $("#customQueryBtn").click(function() {
     if ($("#customQuerySearch").val().length > 0) {
       optionList.push($("#customQuerySearch").val());
       $("#customQuerySearch").val("");
@@ -40,7 +40,7 @@ $(document).ready(function () {
     }
   });
 
-  $(".optionButton").on("click", function () {
+  $(".optionButton").on("click", function() {
     if ($(this).hasClass("optionButtonInactive")) {
       optionButtonActive($(this));
       optionList.push($(this).text());
@@ -51,24 +51,35 @@ $(document).ready(function () {
     updateOptionList();
   });
 
-
-
-  $("div").on("click", ".queryResultTitle", function () {
-    let text = $(this).closest("div").find(".Text");
+  $("div").on("click", ".queryResultTitle", function() {
+    let text = $(this)
+      .closest("div")
+      .find(".Text");
     console.log($(text));
-    if ($(text).is(":hidden")){
+    if ($(text).is(":hidden")) {
       $(text).slideDown();
-    }else{
+    } else {
       $(text).slideUp();
     }
 
-    if ($(this).children().hasClass("fa-angle-right")) {
-      $(this).children().removeClass("fa-angle-right");
-      $(this).children().addClass("fa-angle-down");
-    }
-    else {
-      $(this).children().removeClass("fa-angle-down");
-      $(this).children().addClass("fa-angle-right");
+    if (
+      $(this)
+        .children()
+        .hasClass("fa-angle-right")
+    ) {
+      $(this)
+        .children()
+        .removeClass("fa-angle-right");
+      $(this)
+        .children()
+        .addClass("fa-angle-down");
+    } else {
+      $(this)
+        .children()
+        .removeClass("fa-angle-down");
+      $(this)
+        .children()
+        .addClass("fa-angle-right");
     }
   });
 
@@ -78,17 +89,18 @@ $(document).ready(function () {
       returnString += '<p class="text-secondary">Current queries..</p>';
       for (var i = 0; i < optionList.length; ++i) {
         returnString += '<div class="optionListItem bg-primary text-light">';
-        returnString += '<i class=\"fas fa-times optionListRemoveIcon mr-1\"></i>';
+        returnString +=
+          '<i class="fas fa-times optionListRemoveIcon mr-1"></i>';
         returnString += optionList[i];
         returnString += "</div>";
       }
     } else returnString += '<p class="text-secondary">Start adding queries by clicking above..</p>';
     $("#queryOptionList").html(returnString);
   }
-  
 
-  $("#searchQueryBtn").click(function () {
-      if (optionList.length > 0) {addToHistory(optionList, searchHistory);
+  $("#searchQueryBtn").click(function() {
+    if (optionList.length > 0) {
+      addToHistory(optionList, searchHistory);
 
       var url =
         "https://ibm-project-group2-20200110154159265.eu-gb.mybluemix.net/query?queryData=";
@@ -97,8 +109,9 @@ $(document).ready(function () {
         if (!flag) {
           url = url + optionList[i];
           flag = true;
-        } else url = url + "&choice=" + optionList[i];
+        } else url = url + "&queryData=" + optionList[i];
       }
+      url+= "&colid=61bba916-01d3-497b-8ea2-0ac54d0fe7c2";
 
       fetch(url)
         .then(function(response) {
@@ -120,11 +133,14 @@ $(document).ready(function () {
                   '<h5 class="queryResultTitle"><i class="fas fa-angle-right mr-2"></i>' +
                   jsonData[count].extracted_metadata.title +
                   "</h5>";
-                txt += "<div class='conceptBar bt-1'>"
-                jsonData[count].enriched_text.concepts.forEach((concept) => {
-                  txt += "<div class=\"badge badge-info m-1 conceptBadge conceptBadgeInactive\"><section>" + concept.text + "</section></div>";
-                })
-                txt += "</div>"
+                txt += "<div class='conceptBar bt-1'>";
+                jsonData[count].enriched_text.concepts.forEach(concept => {
+                  txt +=
+                    '<div class="badge badge-info m-1 conceptBadge conceptBadgeInactive"><section>' +
+                    concept.text +
+                    "</section></div>";
+                });
+                txt += "</div>";
                 var textBodyFull = removeTextEnding(jsonData[count].text);
                 var textBodyWithDate = removeLocation(textBodyFull);
                 txt += '<div class="Text">';
@@ -134,7 +150,10 @@ $(document).ready(function () {
                 txt += "<h6>Location</h6>";
                 txt += "<p>" + getLocation(textBodyFull) + "</p>";
                 txt += "<h6>Date/Time</h6>";
-                txt += "<p>" + getDateTime(textBodyWithDate) + '<button style="float:right" value="Submit" class="saveButton btn btn-dark">Save</button></p>';
+                txt +=
+                  "<p>" +
+                  getDateTime(textBodyWithDate) +
+                  '<button style="float:right" value="Submit" class="saveButton btn btn-dark">Save</button></p>';
 
                 txt += "</div></div>";
               } else if (jsonData.length > loopLength) {
@@ -146,9 +165,9 @@ $(document).ready(function () {
           }
 
           $("#queryResultsContainer").html(txt);
-          $(".Text").each(function () {
+          $(".Text").each(function() {
             $(this).hide();
-          })
+          });
           showList();
           optionList = [];
           updateOptionList();
@@ -156,9 +175,6 @@ $(document).ready(function () {
         });
     } else hideList();
   });
-
-
-
 
   function showList() {
     queryShowing = true;
@@ -173,17 +189,32 @@ $(document).ready(function () {
   }
 
   $(document).on("click", ".optionListRemoveIcon", function() {
-    optionButtonInactive($(".optionButton:contains(" + $(this).parent().text() + ")"));
-    optionList.splice(optionList.indexOf($(this).parent().text()), 1);
+    optionButtonInactive(
+      $(
+        ".optionButton:contains(" +
+          $(this)
+            .parent()
+            .text() +
+          ")"
+      )
+    );
+    optionList.splice(
+      optionList.indexOf(
+        $(this)
+          .parent()
+          .text()
+      ),
+      1
+    );
     updateOptionList();
   });
 
   function resetOptionButtons() {
-    $(".optionButton").each(function () {
+    $(".optionButton").each(function() {
       if ($(this).hasClass("optionButtonActive")) {
         optionButtonInactive($(this));
       }
-    })
+    });
   }
 
   function removeTextEnding(fullText) {
@@ -207,9 +238,9 @@ $(document).ready(function () {
     return text.slice(0, text.lastIndexOf(".") + 1);
   }
 
-  $("#queryResultsContainer").on("click", ".conceptBadge", (e) => {
+  $("#queryResultsContainer").on("click", ".conceptBadge", e => {
     let option = $(e.target).text();
-    if (!optionList.includes(option)){
+    if (!optionList.includes(option)) {
       hideList();
       optionList.push(option);
       updateOptionList();
@@ -217,84 +248,75 @@ $(document).ready(function () {
     }
   });
 
-  $('searchHistory').on("click", ".historyEntry", (e) => {
+  $("searchHistory").on("click", ".historyEntry", e => {
     optionList = [];
     let entry = $(e.target);
     entry.children().array.forEach(function(element) {
       console.log("test");
     }, this);
-  })
+  });
 });
 
 function optionButtonActive(button) {
   button.removeClass("optionButtonInactive");
   button.addClass("optionButtonActive");
-  button
-    .children()
-    .removeClass("fa-plus");
-  button
-    .children()
-    .addClass("fa-check");
+  button.children().removeClass("fa-plus");
+  button.children().addClass("fa-check");
 }
 
 function optionButtonInactive(button) {
   button.removeClass("optionButtonActive");
   button.addClass("optionButtonInactive");
-  button
-    .children()
-    .removeClass("fa-check");
-  button
-    .children()
-    .addClass("fa-plus");
+  button.children().removeClass("fa-check");
+  button.children().addClass("fa-plus");
 }
 
+//SIDEBAR
+$("#sidebar #sidebarButton").click(toggleSidebar);
 
+function toggleSidebar() {
+  $("#sidebar #sidebarContent").toggle(500);
+  if (sidebarOpen) {
+    $("#sidebar #sidebarButton")
+      .removeClass("fa-angle-double-right")
+      .addClass("fa-angle-double-left");
+  } else {
+    $("#sidebar #sidebarButton")
+      .removeClass("fa-angle-double-left")
+      .addClass("fa-angle-double-right");
+  }
+  sidebarOpen = !sidebarOpen;
+}
 
+function addToHistory(tags, searchHistory) {
+  console.log(searchHistory);
+  searchHistory.push(new searchQuery(tags));
 
-//SIDEBAR 
-$('#sidebar #sidebarButton').click(toggleSidebar); 
- 
-function toggleSidebar(){ 
-  $('#sidebar #sidebarContent').toggle(500); 
-  if (sidebarOpen){ 
-    $('#sidebar #sidebarButton').removeClass('fa-angle-double-right').addClass('fa-angle-double-left'); 
-  }else{ 
-    $('#sidebar #sidebarButton').removeClass('fa-angle-double-left').addClass('fa-angle-double-right'); 
-  } 
-  sidebarOpen = !sidebarOpen; 
-}; 
- 
-function addToHistory(tags, searchHistory){ 
-  console.log(searchHistory); 
-  searchHistory.push(new searchQuery(tags)); 
- 
-  refreshHistory(searchHistory); 
- 
-   
-} 
- 
-function refreshHistory(searchHistory){ 
-  let output = ""; 
- 
-  searchHistory.forEach((entry) => { 
-    let tEntry = "<div class=\"historyEntry\">"; 
-    entry.getTags().forEach((tag) => { 
-      tEntry += "<div class=\"optionListItem bg-primary text-light\">" + tag + "</div>"  
-    }) 
- 
-    output += tEntry + "</div>"; 
-  }, this); 
- 
-  $('#searchHistory').html(output); 
-   
-} 
- 
-class searchQuery{ 
-    constructor(tags){ 
-        this.tags = tags; 
-    } 
- 
-    getTags(){ 
-        return this.tags; 
-    } 
-} 
+  refreshHistory(searchHistory);
+}
+
+function refreshHistory(searchHistory) {
+  let output = "";
+
+  searchHistory.forEach(entry => {
+    let tEntry = '<div class="historyEntry">';
+    entry.getTags().forEach(tag => {
+      tEntry +=
+        '<div class="optionListItem bg-primary text-light">' + tag + "</div>";
+    });
+
+    output += tEntry + "</div>";
+  }, this);
+
+  $("#searchHistory").html(output);
+}
+
+class searchQuery {
+  constructor(tags) {
+    this.tags = tags;
+  }
+
+  getTags() {
+    return this.tags;
+  }
+}
