@@ -98,6 +98,9 @@ $(document).ready(function() {
   function updateOptionList() {
     var returnString = "";
     if (optionList.length > 0) {
+      if ($('#clearQueryBtn').is(":hidden")){
+        $('#clearQueryBtn').toggle(300);
+      }
       returnString += '<p class="text-secondary">Current queries..</p>';
       for (var i = 0; i < optionList.length; ++i) {
         returnString += '<div class="optionListItem bg-primary text-light">';
@@ -106,7 +109,12 @@ $(document).ready(function() {
         returnString += optionList[i];
         returnString += "</div>";
       }
-    } else returnString += '<p class="text-secondary">Start adding queries by clicking above..</p>';
+    } else {
+      returnString += '<p class="text-secondary">Start adding queries by clicking above..</p>';
+      if (!$('#clearQueryBtn').is(":hidden")){
+        $('#clearQueryBtn').toggle(300);
+      }
+    } 
     $("#queryOptionList").html(returnString);
   }
 
@@ -209,7 +217,6 @@ $(document).ready(function() {
     queryShowing = false;
     $("#option-container").slideDown();
     $("#searchQueryBtn").html('<i class="fas fa-search mr-2"></i>Search');
-    $("#clearQueryBtn").toggle(300);
   }
 
   $(document).on("click", ".optionListRemoveIcon", function() {
