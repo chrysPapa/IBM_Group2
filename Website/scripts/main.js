@@ -202,12 +202,14 @@ $(document).ready(function() {
     queryShowing = true;
     $("#option-container").slideUp();
     $("#searchQueryBtn").html('<i class="fas fa-search mr-2"></i>New Query');
+    $("#clearQueryBtn").toggle(300);
   }
 
   function hideList() {
     queryShowing = false;
     $("#option-container").slideDown();
     $("#searchQueryBtn").html('<i class="fas fa-search mr-2"></i>Search');
+    $("#clearQueryBtn").toggle(300);
   }
 
   $(document).on("click", ".optionListRemoveIcon", function() {
