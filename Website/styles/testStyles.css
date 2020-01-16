@@ -65,8 +65,10 @@ html, body {
 }
 
 .Text{
-    border-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     background: #82CAFA;
+    padding: 16px;
 }
 
 .queryResultTitle{
@@ -80,6 +82,16 @@ html, body {
 
 .saveButton{
     color: #82CAFA;
+}
+
+.conceptBar{
+    border-top: 1px solid #82CAFA;
+    border-bottom: 1px solid #82CAFA;
+    margin: 0px 0px;
+}
+
+.conceptBadge{
+    cursor: pointer;
 }
 
 #sidebarButton{

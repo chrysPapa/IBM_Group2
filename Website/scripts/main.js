@@ -40,7 +40,7 @@ $(document).ready(function () {
     }
   });
 
-  $(".optionButton").click(function () {
+  $(".optionButton").on("click", function () {
     if ($(this).hasClass("optionButtonInactive")) {
       optionButtonActive($(this));
       optionList.push($(this).text());
@@ -51,8 +51,17 @@ $(document).ready(function () {
     updateOptionList();
   });
 
+
+
   $("div").on("click", ".queryResultTitle", function () {
-    $(this).closest("div").find(".Text").toggle(400);
+    let text = $(this).closest("div").find(".Text");
+    console.log($(text));
+    if ($(text).is(":hidden")){
+      $(text).slideDown();
+    }else{
+      $(text).slideUp();
+    }
+
     if ($(this).children().hasClass("fa-angle-right")) {
       $(this).children().removeClass("fa-angle-right");
       $(this).children().addClass("fa-angle-down");
@@ -112,9 +121,14 @@ $(document).ready(function () {
                   '<h5 class="queryResultTitle"><i class="fas fa-angle-right mr-2"></i>' +
                   jsonData[count].extracted_metadata.title +
                   "</h5>";
+                txt += "<div class='conceptBar bt-1'>"
+                jsonData[count].enriched_text.concepts.forEach((concept) => {
+                  txt += "<div class=\"badge badge-info m-1 conceptBadge conceptBadgeInactive\"><section>" + concept.text + "</section></div>";
+                })
+                txt += "</div>"
                 var textBodyFull = removeTextEnding(jsonData[count].text);
                 var textBodyWithDate = removeLocation(textBodyFull);
-                txt += '<div class="Text p-3">';
+                txt += '<div class="Text">';
                 txt += "<h6>Description</h6>";
                 txt += "<p>" + removeDateTime(textBodyWithDate);
                 +"</p>";
@@ -143,6 +157,8 @@ $(document).ready(function () {
         });
     } else hideList();
   });
+
+
 
 
   function showList() {
@@ -191,6 +207,16 @@ $(document).ready(function () {
   function removeDateTime(text) {
     return text.slice(0, text.lastIndexOf(".") + 1);
   }
+
+  $("#queryResultsContainer").on("click", ".conceptBadge", (e) => {
+    let option = $(e.target).text();
+    if (!optionList.includes(option)){
+      hideList();
+      optionList.push(option);
+      updateOptionList();
+      console.log($(e.target).text());
+    }
+  });
 });
 
 function optionButtonActive(button) {
@@ -214,6 +240,9 @@ function optionButtonInactive(button) {
     .children()
     .addClass("fa-plus");
 }
+
+
+
 
 //SIDEBAR 
 $('#sidebar #sidebarButton').click(toggleSidebar); 
