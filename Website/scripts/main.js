@@ -85,11 +85,10 @@ $(document).ready(function () {
     } else returnString += '<p class="text-secondary">Start adding queries by clicking above..</p>';
     $("#queryOptionList").html(returnString);
   }
-  var queryShowing = false;
+  
 
   $("#searchQueryBtn").click(function () {
-    if (!queryShowing) {
-      if (optionList.length > 0) {addToHistory(optionList, searchHistory);}
+      if (optionList.length > 0) {addToHistory(optionList, searchHistory);
 
       var url =
         "https://ibm-project-group2-20200110154159265.eu-gb.mybluemix.net/query?queryData=";
@@ -217,6 +216,14 @@ $(document).ready(function () {
       console.log($(e.target).text());
     }
   });
+
+  $('searchHistory').on("click", ".historyEntry", (e) => {
+    optionList = [];
+    let entry = $(e.target);
+    entry.children().array.forEach(function(element) {
+      console.log("test");
+    }, this);
+  })
 });
 
 function optionButtonActive(button) {
