@@ -101,7 +101,7 @@ $(document).ready(function() {
       if ($('#clearQueryBtn').is(":hidden")){
         $('#clearQueryBtn').toggle(300);
       }
-      returnString += '<p class="text-secondary">Current queries..</p>';
+      returnString += '<p class="text-secondary">Current queries...</p>';
       for (var i = 0; i < optionList.length; ++i) {
         returnString += '<div class="optionListItem bg-primary text-light">';
         returnString +=
