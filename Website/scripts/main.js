@@ -124,6 +124,9 @@ $(document).ready(function() {
     optionList = [];
     updateOptionList();
     resetOptionButtons();
+    $("html")[0].scrollIntoView();
+
+
   })
 
   $("#searchQueryBtn").click(function (e) {

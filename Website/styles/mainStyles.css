@@ -106,7 +106,9 @@ html, body {
 
 #sidebarButton{
     padding: 2px;
-    border-left: 1px solid #007bff;
+    border-left: 1px solid #28a745;
+    background-color: #28a745;
+    color: black;
 }
 
 #sidebar {
@@ -118,6 +120,7 @@ html, body {
     top: 0; 
     right: 0;
     overflow-x: hidden;
+    
     
     transition: 0.5s ease-out;
     color: #000;
