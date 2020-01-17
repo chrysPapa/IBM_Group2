@@ -98,9 +98,10 @@ $(document).ready(function() {
   function updateOptionList() {
     var returnString = "";
     if (optionList.length > 0) {
-      if ($('#clearQueryBtn').is(":hidden")){
+      if ($('#clearQueryBtn').is(":hidden") && !queryShowing){
         $('#clearQueryBtn').toggle(300);
       }
+      $('#searchQueryBtn').removeAttr("disabled");
       returnString += '<p class="text-secondary">Current queries...</p>';
       for (var i = 0; i < optionList.length; ++i) {
         returnString += '<div class="optionListItem bg-primary text-light">';
@@ -110,10 +111,11 @@ $(document).ready(function() {
         returnString += "</div>";
       }
     } else {
-      returnString += '<p class="text-secondary">Start adding queries by clicking above..</p>';
+      returnString += '<p class="text-secondary">Start adding queries by clicking above...</p>';
       if (!$('#clearQueryBtn').is(":hidden")){
         $('#clearQueryBtn').toggle(300);
       }
+      if (!queryShowing) $('#searchQueryBtn').attr("disabled", true);
     } 
     $("#queryOptionList").html(returnString);
   }
@@ -203,6 +205,7 @@ $(document).ready(function() {
           resetOptionButtons();
         });
     } else{
+
       hideList();
       optionList = [];
       updateOptionList();
