@@ -143,7 +143,14 @@ $(document).ready(function() {
           flag = true;
         } else url = url + "&queryData=" + optionList[i];
       }
-      url+= "&colid=61bba916-01d3-497b-8ea2-0ac54d0fe7c2";
+      url += "&colid=" + $("#confSelection").children("option:selected").val();
+
+      var textFormat;
+      if ($("#confSelection").children("option:selected").text().includes("CES"))
+        textFormat = 1;
+      else if ($("#confSelection").children("option:selected").text().includes("O'REILLY"))
+        textFormat = 2;
+      
       waitingStatus(true);
 
 
@@ -176,18 +183,16 @@ $(document).ready(function() {
                     "</section></div>";
                 });
                 txt += "</div>";
-                var textBodyFull = removeTextEnding(jsonData[count].text);
-                var textBodyWithDate = removeLocation(textBodyFull);
                 txt += '<div class="Text">';
                 txt += "<h6>Description</h6>";
-                txt += "<p>" + removeDateTime(textBodyWithDate);
-                +"</p>";
+                txt += "<p>" + getDescription(jsonData[count].text, textFormat)
+                  + "</p>";
                 txt += "<h6>Location</h6>";
-                txt += "<p>" + getLocation(textBodyFull) + "</p>";
+                txt += "<p>" + getLocation(jsonData[count].text, textFormat) + "</p>";
                 txt += "<h6>Date/Time</h6>";
                 txt +=
                   "<p>" +
-                  getDateTime(textBodyWithDate) +
+                  getDateTime(jsonData[count].text, textFormat) +
                   '<button style="float:right" value="Submit" class="saveButton btn btn-dark">Save</button></p>';
 
                 txt += "</div></div>";
@@ -281,25 +286,60 @@ $(document).ready(function() {
     });
   }
 
-  function removeTextEnding(fullText) {
-    return fullText.slice(0, fullText.search("All CES conference sessions"));
+  function getDescription(text, formatNum) {
+    if (formatNum == 1) {
+      if (text.includes("All CES conference sessions"))
+        text = text.slice(0, text.search("All CES conference sessions"));
+      if (text.includes("LOCATION"))
+        text = text.slice(0, text.search("LOCATION"));
+      return text.slice(0, text.lastIndexOf(".") + 1);
+    } else if (formatNum == 2) {
+      if (text.includes("Capital Suite"))
+        return text.slice(text.search("Capital Suite") + 16, text.length);
+      else if (text.includes("Capital Hall"))
+        return text.slice(text.search("Capital Hall") + 12, text.length);
+      else if (text.includes("S11"))
+        return text.slice(text.search("S11") + 6, text.length)
+      else return text;
+    }
   }
 
-  function removeLocation(text) {
-    return text.slice(0, text.search("LOCATION"));
+  function getLocation(text, formatNum) {
+    if (formatNum == 1) {
+      if (text.includes("All CES conference sessions"))
+        text = text.slice(0, text.search("All CES conference sessions"));
+      if (text.includes("LOCATION") && text.includes("INCLUDED")) {
+        text = text.slice(text.search("LOCATION"), text.search("INCLUDED"));
+        return text.replace("LOCATION", "");
+      }
+    } else if (formatNum == 2) {
+      if (text.includes("Capital Suite"))
+        return text.slice(text.search("Location"), text.search("Capital Suite") + 16)
+      else if (text.includes("Capital Hall"))
+        return text.slice(text.search("Location"), text.search("Capital Hall") + 13)
+    }
   }
 
-  function getLocation(text) {
-    text = text.slice(text.search("LOCATION"), text.search("INCLUDED"));
-    return text.replace("LOCATION", "");
-  }
-
-  function getDateTime(text) {
-    return text.slice(text.lastIndexOf(".") + 1, text.length);
-  }
-
-  function removeDateTime(text) {
-    return text.slice(0, text.lastIndexOf(".") + 1);
+  function getDateTime(text, formatNum) {
+    if (formatNum == 1) {
+      if (text.includes("All CES conference sessions"))
+        text = text.slice(0, text.search("All CES conference sessions"));
+      if (text.includes("LOCATION"))
+        text = text.slice(0, text.search("LOCATION"));
+      if (text.includes("INCLUDED WITH:"))
+        text = text.replace("INCLUDED WITH:", "");
+      if (text.includes("Conference Session"))
+        text = text.slice(0, text.search("Conference Session"));
+      if (text.includes("AM"))
+        return text.slice(text.lastIndexOf(".") + 1, text.search("AM") + 3);
+      else if (text.includes("PM"))
+        return text.slice(text.lastIndexOf(".") + 1, text.search("PM") + 3);
+      return text.slice(text.lastIndexOf(".") + 1, text.length);
+    } else if (formatNum == 2) {
+      if (text.includes("Location")) {
+        return text.slice(0, text.search("Location"));
+      } else return "";
+    }
   }
 
   $("body").on("click", ".conceptBadge", e => {

@@ -6,6 +6,7 @@
     $listQuery = "SELECT * FROM conferencedata";
     $stmt = $pdo->query($listQuery);
     ?>
+    <link rel="icon" href="resources/ibm-cloud.png">
     <meta charset="UTF-8" />
     <!-- Mobile first -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,7 +36,7 @@
   </head>
 
   <body>
-    <div id="sidebar" class="sidebarClose" style="z-index: 6;">
+    <div id="sidebar" class="sidebarClose" style="z-index: 1030;">
       <a href="#/" id="sidebarButton" class="fas fa-angle-double-left"></a>
       <div id="sidebarContent">
         <h2>Previously Searched</h2>
@@ -70,7 +71,7 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Custom search.."
+            placeholder="Custom search..."
             id="customQuerySearch"
           />
           <div class="input-group-append">
@@ -88,6 +89,7 @@
         
     </div>
     </div>
+  <div class="container sticky-top bg-white p-1 border-bottom border-light" id="optionListContainer">
         <div class="container" id="queryOptionList">
             <p class="text-secondary">Start adding queries by clicking above...</p>
         </div>
@@ -96,17 +98,21 @@
       id="searchQueryBtnContainer"
     >
       
-      <button type="button" class="btn btn-success p-2 ml-1" id="searchQueryBtn">
+      <button type="button" class="btn btn-success p-2 ml-1" id="searchQueryBtn" disabled>
         <i class="fas fa-search mr-2"></i>Search
       </button>
 
-      <button type="button" class="btn btn-danger p-2 " id="clearQueryBtn">
+      <button type="button" class="btn btn-danger p-2" id="clearQueryBtn" style="display:none">
         <i class="fas fa-times mr-2"></i>Clear
       </button>
 
     </div>
+  </div >
     <div id="queryResultsContainer" class="container">
         
+    </div>
+    <div id="saveContainer" class="container">
+
     </div>
     <script src="scripts/main.js"></script>
   </body>
