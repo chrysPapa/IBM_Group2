@@ -5,6 +5,7 @@
     require('includes/conn.php');
     $listQuery = "SELECT * FROM conferencedata";
     $stmt = $pdo->query($listQuery);
+    $optionList = "SELECT * FROM queryoptions"
     ?>
     <link rel="icon" href="resources/ibm-cloud.png">
     <meta charset="UTF-8" />
