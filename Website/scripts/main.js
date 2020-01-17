@@ -195,7 +195,30 @@ $(document).ready(function() {
               }
             }
           }
+          //SAVE LIST
+          txt += "<br><br><h4>Saved</h4>";
+          var  flag=1;
+          $(document).on("click", ".saveButton", function () {
+            var html = $(this).parent().parent().parent().html();
+            $(this).text("Unsave");
+            $(this).removeClass("saveButton");
+            $(this).addClass("unsaveButton");
+            $("#saveContainer").append($(this).parent().parent().parent());
+            $(document).on("click", ".unsaveButton", function () { 
+              $("#saveContainer").append($(this).parent().parent().parent().hide())
 
+          });
+        }); 
+
+
+          function updateSaveList() {
+            var txt = "";
+            for (var i = 0; i < saveList.length; ++i) {
+
+            }
+
+          }
+          // /SAVE LIST
           $("#queryResultsContainer").html(txt);
           $(".Text").each(function() {
             $(this).hide();
@@ -276,7 +299,7 @@ $(document).ready(function() {
     return text.slice(0, text.lastIndexOf(".") + 1);
   }
 
-  $("#queryResultsContainer").on("click", ".conceptBadge", e => {
+  $("body").on("click", ".conceptBadge", e => {
     let option = $(e.target).text();
     if (!optionList.includes(option)) {
       hideList();
@@ -285,6 +308,8 @@ $(document).ready(function() {
       console.log($(e.target).text());
     }
   });
+
+
 
   $('#searchHistory').on("click", ".historyEntry", (e) => {
     console.log("test");
