@@ -1,10 +1,10 @@
 var sidebarOpen = false; //initiate sidebar state
-$(document).ready(function() {
+$(document).ready(function () {
   var searchHistory = [];
   var queryShowing = false;
 
   var optionList = [
-    "Aritificial Intelligence",
+    "Artificial Intelligence",
     "Machine Learning",
     "Data Algorithms",
     "Robotics",
@@ -13,7 +13,12 @@ $(document).ready(function() {
     "Virtual Reality",
     "Augmented Reality",
     "Cryptocurrency",
-    "Blockchain"
+    "Blockchain",
+    "5G",
+    "Big Data",
+    "Cloud Computing",
+    "Cyber Security",
+    "Transportation"
   ];
   var divText = "";
   for (var i = 0; i < optionList.length; ++i) {
@@ -33,7 +38,7 @@ $(document).ready(function() {
   }
   var optionList = [];
 
-  $("#customQueryBtn").click(function() {
+  $("#customQueryBtn").click(function () {
     if ($("#customQuerySearch").val().length > 0) {
       optionList.push($("#customQuerySearch").val());
       $("#customQuerySearch").val("");
@@ -41,7 +46,7 @@ $(document).ready(function() {
     }
   });
 
-  $(".optionButton").on("click", function() {
+  $(".optionButton").on("click", function () {
     if ($(this).hasClass("optionButtonInactive")) {
       optionButtonActive($(this));
       optionList.push($(this).text());
@@ -52,18 +57,18 @@ $(document).ready(function() {
     updateOptionList();
   });
 
-  $('#customQuerySearch').keypress(function(event){
-        var keycode = (event.keyCode ? event.keyCode : event.which);
-        if(keycode == '13'){
-          if ($("#customQuerySearch").val().length > 0) {
-            optionList.push($("#customQuerySearch").val());
-            $("#customQuerySearch").val("");
-            updateOptionList();
-          };
-        }
-    });
+  $('#customQuerySearch').keypress(function (event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if (keycode == '13') {
+      if ($("#customQuerySearch").val().length > 0) {
+        optionList.push($("#customQuerySearch").val());
+        $("#customQuerySearch").val("");
+        updateOptionList();
+      };
+    }
+  });
 
-  $("div").on("click", ".queryResultTitle", function() {
+  $("div").on("click", ".queryResultTitle", function () {
     let text = $(this)
       .closest("div")
       .find(".Text");
@@ -98,7 +103,7 @@ $(document).ready(function() {
   function updateOptionList() {
     var returnString = "";
     if (optionList.length > 0) {
-      if ($('#clearQueryBtn').is(":hidden") && !queryShowing){
+      if ($('#clearQueryBtn').is(":hidden") && !queryShowing) {
         $('#clearQueryBtn').toggle(300);
       }
       $('#searchQueryBtn').removeAttr("disabled");
@@ -112,11 +117,11 @@ $(document).ready(function() {
       }
     } else {
       returnString += '<p class="text-secondary">Start adding queries by clicking above...</p>';
-      if (!$('#clearQueryBtn').is(":hidden")){
+      if (!$('#clearQueryBtn').is(":hidden")) {
         $('#clearQueryBtn').toggle(300);
       }
       if (!queryShowing) $('#searchQueryBtn').attr("disabled", true);
-    } 
+    }
     $("#queryOptionList").html(returnString);
   }
 
@@ -131,8 +136,8 @@ $(document).ready(function() {
 
   $("#searchQueryBtn").click(function (e) {
 
-      if (!queryShowing && optionList.length > 0) {
-        addToHistory(optionList, searchHistory);
+    if (!queryShowing && optionList.length > 0) {
+      addToHistory(optionList, searchHistory);
 
       var url =
         "https://ibm-project-group2-20200110154159265.eu-gb.mybluemix.net/query?queryData=";
@@ -150,25 +155,36 @@ $(document).ready(function() {
         textFormat = 1;
       else if ($("#confSelection").children("option:selected").text().includes("O'REILLY"))
         textFormat = 2;
-      
+
       waitingStatus(true);
 
 
       fetch(url)
-        .then(function(response) {
+        .then(function (response) {
           return response.json();
         })
-        .then(function(jsonData) {
-          waitingStatus(false);
+        .then(function (jsonData) {
+          $("html")[0].scrollIntoView();
+          if (jsonData)
+            waitingStatus(false);
           var txt = "";
-          txt += "<h4>Titles</h4>";
-          loopLength = 10;
-          for (var count = 0; count < loopLength; ++count) {
-            if (jsonData.length > 0) {
+          var loopLength;
+          jsonData.length < 10 ? loopLength = jsonData.length : loopLength = 10;
+          if (loopLength == 0) {
+            txt += "<h2 class='text-danger mb-8'>No Results Found.</h2>"
+          }
+          else {
+            txt += "<h4>Titles</h4>";
+            
+
+
+
+            for (var count = 0; count < loopLength; ++count) {
               if (
                 !jsonData[count].text.includes("Price: $") &&
                 !jsonData[count].text.includes("CES Registration") &&
-                !jsonData[count].text.includes("arrow-black")
+                !jsonData[count].text.includes("arrow-black")&&
+                !jsonData[count].text.includes("Executive Briefing DevOps, DevSecOps")
               ) {
                 txt += '<div class="p-3">';
                 txt +=
@@ -194,7 +210,7 @@ $(document).ready(function() {
                   "<p>" +
                   getDateTime(jsonData[count].text, textFormat) +
                   '<button style="float:right" value="Submit" class="saveButton btn btn-dark">Save</button></p>';
-
+                txt += "<a href=\"" + jsonData[count].metadata.source.url + "\">More Information</a>";
                 txt += "</div></div>";
               } else if (jsonData.length > loopLength) {
                 loopLength++;
@@ -204,44 +220,37 @@ $(document).ready(function() {
             }
           }
           //SAVE LIST
-          txt += "<br><br><h4>Saved</h4>";
-          var  flag=1;
+          txt += "<h4>Saved</h4>";
+          var flag = 1;
           $(document).on("click", ".saveButton", function () {
             var html = $(this).parent().parent().parent().html();
             $(this).text("Unsave");
             $(this).removeClass("saveButton");
             $(this).addClass("unsaveButton");
             $("#saveContainer").append($(this).parent().parent().parent());
-            $(document).on("click", ".unsaveButton", function () { 
+            $("#saveContainer").children().last().find(".Text").hide();
+            $(document).on("click", ".unsaveButton", function () {
               $("#saveContainer").append($(this).parent().parent().parent().hide())
 
+            });
           });
-        }); 
 
-
-          function updateSaveList() {
-            var txt = "";
-            for (var i = 0; i < saveList.length; ++i) {
-
-            }
-
-          }
           // /SAVE LIST
           $("#queryResultsContainer").html(txt);
-          $(".Text").each(function() {
+          $(".Text").each(function () {
             $(this).hide();
           });
           showList();
           updateOptionList();
           resetOptionButtons();
         });
-    } else{
+    } else {
 
       hideList();
       optionList = [];
       updateOptionList();
       $("html")[0].scrollIntoView();
-      }
+    }
   });
 
   function showList() {
@@ -257,14 +266,14 @@ $(document).ready(function() {
     $("#searchQueryBtn").html('<i class="fas fa-search mr-2"></i>Search');
   }
 
-  $(document).on("click", ".optionListRemoveIcon", function() {
+  $(document).on("click", ".optionListRemoveIcon", function () {
     optionButtonInactive(
       $(
         ".optionButton:contains(" +
-          $(this)
-            .parent()
-            .text() +
-          ")"
+        $(this)
+          .parent()
+          .text() +
+        ")"
       )
     );
     optionList.splice(
@@ -279,7 +288,7 @@ $(document).ready(function() {
   });
 
   function resetOptionButtons() {
-    $(".optionButton").each(function() {
+    $(".optionButton").each(function () {
       if ($(this).hasClass("optionButtonActive")) {
         optionButtonInactive($(this));
       }
@@ -383,13 +392,13 @@ function optionButtonInactive(button) {
   button.children().addClass("fa-plus");
 }
 
-function waitingStatus(status){
+function waitingStatus(status) {
 
-  if (status){
+  if (status) {
     $('#searchQueryBtn').removeClass('btn-success').addClass('btn-secondary')
     $('#searchQueryBtn').find('i').removeClass('fa-search').addClass('fa-hourglass-half')
   }
-  else{
+  else {
     $('#searchQueryBtn').find('i').addClass('fa-search').removeClass('fa-hourglass-half')
     $('#searchQueryBtn').addClass('btn-success').removeClass('btn-secondary')
   }

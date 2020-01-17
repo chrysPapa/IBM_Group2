@@ -39,7 +39,7 @@
     <div id="sidebar" class="sidebarClose" style="z-index: 1030;">
       <a href="#/" id="sidebarButton" class="fas fa-angle-double-left"></a>
       <div id="sidebarContent">
-        <h2>Previously Searched</h2>
+        <h2>Search History</h2>
         <div id="searchHistory"></div>
       </div>
     </div>
@@ -108,7 +108,7 @@
 
     </div>
   </div >
-    <div id="queryResultsContainer" class="container">
+    <div id="queryResultsContainer" class="container b-bottom-1 b-bottom b-bottom-light">
         
     </div>
     <div id="saveContainer" class="container">
